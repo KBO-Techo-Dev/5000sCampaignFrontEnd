@@ -1,0 +1,416 @@
+<?php include 'header.phtml';?>
+<?php
+
+	$countries = 7;
+	$slideshow_hegith = 400 * ($_SESSION['screen_width']/640);
+	if( $slideshow_hegith < 320 ) $slideshow_hegith = 320;
+	if( $slideshow_hegith > 440 ) $slideshow_hegith = 440;
+
+echo '<div data-role="page" id="campaign-index">';
+	// HEADER
+	include 'header_div.phtml';
+	// CONTENT
+	echo '<center>';
+	echo '<div role="main" class="ui-content" style="max-width:1024px">';
+		if( $this->debug )
+			print_r( $this->debug );
+
+		if( !$this->mobile_view )
+			echo '<img src="' . $this->image_root . $this->language . '/title-short.png" width="75%" style="max-width:600px; padding:80px 0px 100px 0px;"/>';
+		else
+		{
+			echo '<div style="font-size:2em; font-weight:bold; padding:10px">' . $this->dict['CAMPAIGN'] . '</div>';
+		}
+		echo '<p></p>';
+		
+		$campaign = array();
+		foreach( $this->campaign as $i => $data )
+		{
+			if( $data['campaign_id'] == $this->id )
+			{
+				$campaign = $data;
+				break;
+			}
+		}
+		
+		if( !$this->mobile_view ) echo '<div class="rwd-onethird">';
+			if( !$this->mobile_view ) echo '<div class="ui-block-a"><div style="width:90%">';
+				if( $this->mobile_view )
+				{
+					echo '<div class="ui-bar ui-bar-a ui-corner-all">';
+						echo '<h2>' . $campaign['title'] . '</h2>';
+					echo '</div>';					
+				}
+				// SLIDER ---------------------------------------------------------------------------------------------
+				if( $this->mobile_view ) echo '<div>';
+					//include 'jssor.slider.campaign.jquery.phtml';
+					echo '<div class="fadein" style="height:' . $slideshow_hegith . 'px">';
+						for( $i=1; $i<=5; $i++ )
+							echo '<img src="' . $this->image_root . 'campaign/' . $campaign['campaign_id'] . '/' . $i . '.jpg" width="100%" style="max-width:690px;">';
+					echo '</div>';
+?>
+					<script>
+						$(function(){
+							$('.faderandom > :gt(0)').hide();
+							setInterval(function(){
+								var rand = Math.floor(Math.random() * ($('.faderandom').children().length-1));
+								$('.faderandom > :first-child').appendTo('.faderandom').fadeOut();
+								$('.faderandom > *').eq(rand).prependTo('.faderandom').fadeIn();
+							}, 6000);
+						});
+					</script>
+<?php
+				if( $this->mobile_view ) echo '</div>';
+				// SIGNATURE | TARGET ---------------------------------------------------------------------------------------------
+				$mystr = str_replace('[LEFTOVER]', $campaign['target'] - $campaign['signatures'], $this->dict['HELP_US_REACH_TARGET']);
+				if( $this->mobile_view )
+				{
+					echo '<div class="ui-grid-a">';
+						echo '<div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:64px;"><big><big><big><big><font color="red">' . $campaign['signatures'] . '</font></big></big></big></big><br/>' . $this->dict['SIGNATURES'] . '</div></div>';
+						echo '<div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:64px;"><big><big><big><big>' . $campaign['target'] . '</big></big></big></big><br/>' . $this->dict['TARGET'] . '</div></div>';
+					echo '</div>';
+					echo '<p style="padding:5px;"><font color="red">' . str_replace('[TARGET]', $campaign['target'], $mystr). '</font></p>';
+				}
+				else
+				{
+					echo '<div id="campaign-jqmeter-container" style="text-align:left;"></div>';
+					echo '<div class="ui-grid-a" style="margin-top:-10px;">';
+						echo '<div class="ui-block-a" style="text-align:left; font-size:0.8em;">' . str_replace('[SIGNATURES]', $campaign['signatures'], $this->dict['CURRENT_SIGNATURER']) . '</div>'; 
+						echo '<div class="ui-block-b" style="text-align:right; font-size:0.8em;"><font color="red">' . str_replace('[TARGET]', $campaign['target'], $mystr) . '</font></div>'; 
+					echo '</div>';
+?>
+					<script type="text/javascript">
+						$('#campaign-jqmeter-container').jQMeter({
+							goal: <?php echo "'" . $campaign['target'] . "'"; ?>,
+							raised: <?php echo "'" . $campaign['signatures'] . "'"; ?>,
+							orientation: 'horizontal',
+							width:'100%',
+							height:'24px',
+							barColor: '#c1392b',
+							animationSpeed: '2000',
+							counterSpeed: '2000'
+						});
+					</script>
+<?php
+				}
+				if( $this->mobile_view )
+					echo '<br/><p><a href="' . $this->self_root . 'signature/index/id/' . $this->id . '" class="ui-btn ui-btn-d ui-corner-all" rel="external">' . $this->dict['SIGN_TO_SUPPORT'] . '</a></p>';
+				
+				// DETAIL | COMMENT | LETTER | RECENT SIGNATURES ---------------------------------------------------------------------------------------------
+				if( !$this->mobile_view )
+					echo '<br/><br/><br/>';
+				
+				echo '<p style="text-align:left; white-space:normal; color:#000000;">' . $campaign['detail'] . '</p>';
+				echo '<div data-role="collapsibleset" data-theme="a" data-content-theme="a">';
+					echo '<div data-role="collapsible">';
+						echo '<h3>' . $this->dict['COMMENT'] . '</h3>';
+						if( isset($this->comments[0]) )
+						{
+							foreach( $this->comments as $k => $data )
+							{
+								echo '<div style="text-align:left; padding:10px; border-bottom:1px solid #eee;">';
+									echo '<h3>' . $data['name'] . '</h3>';
+									echo '<p style="font-size:0.8em;">' . $data['comment'] . '</p>';
+								echo '</div>';
+							}
+						}
+						else
+						{
+							echo '<p style="text-align:left">' . $this->dict['COMMENT_NOT_FOUND'] . '</p>';							
+						}
+					echo '</div>';				
+					$i = 0;
+					$letter_num = sizeof($this->letters);
+					echo '<div data-role="collapsible">';
+						echo '<h3>' . $this->dict['LETTER'] . ($letter_num > 1 ? '<span class="ui-li-count">' . $letter_num . '</span>' : '') . '</h3>';
+						
+						if( $letter_num == 1 )
+						{
+							echo '<p style="text-align:left; white-space:normal;">';
+								echo $this->letters[$i]['content'];
+							echo '</p>';							
+						}
+						else
+						{
+							echo '<ul data-role="listview" data-theme="a" data-divider-theme="c">';
+								foreach( $this->letters as $data )
+								{
+									echo '<li data-role="list-divider">' . $data['name'] . '</li>';
+									echo '<li><p style="text-align:left; white-space:normal;">';
+										echo $data['content'];
+									echo '</p><li>';
+								}
+							echo '</ul>';
+						}
+					echo '</div>';
+					if( $this->mobile_view && isset($this->recent_signatures[0]) )
+					{
+						echo '<div data-role="collapsible">';
+							echo '<h3>' . $this->dict['RECENT_SIGNATURES'] . '</h3>';
+							/* v.1 (List View)
+							echo '<ul data-role="listview">';
+								foreach( $this->recent_signatures as $c )
+								{
+									echo '<li><h3>' . $c['name'] . '</h3><p>' . $c['period'] . '</p></li>';
+								}
+							echo '</ul>';
+							*/
+							// v.2 (DIV)
+							foreach( $this->recent_signatures as $data )
+							{
+								echo '<div style="text-align:left; padding:10px; border-bottom:1px solid #eee;">';
+									echo '<div class="ui-grid-a">';
+										echo '<div class="ui-block-a" style="white-space:normal;">' . $data['name'] . '</div>';
+										echo '<div class="ui-block-b" style="text-align:right;">' . $data['period'] . '</div>';
+									echo '</div>';
+									//echo $data['name'] . '&nbsp;&nbsp;' . $data['period'];
+								echo '</div>';								
+							}
+						echo '</div>';
+					}
+				echo '</div>';
+				if( $this->mobile_view )
+					echo '<p><a href="' . $this->self_root . 'signature/index/id/' . $this->id . '" class="ui-btn ui-btn-d ui-corner-all" rel="external">' . $this->dict['SIGN_TO_SUPPORT'] . '</a></p>';
+				else
+					echo '<p><a href="' . $this->self_root . '" class="ui-btn ui-shadow ui-corner-all" rel="external">' . $this->dict['BACK'] . '</a></p>';
+				
+			if( !$this->mobile_view ) echo '</div></div>';
+			
+			// SIGN | RECENT SIGNATURES ---------------------------------------------------------------------------------------------
+			if( !$this->mobile_view )
+			{
+				echo '<div class="ui-block-b" style="border-left:4px solid #dddddd; background-color:#f5f5f5;"><div style="width:90%">';
+				if( !$this->thankyou
+					&& !$this->error )
+				{
+					echo '<div style="padding:4px; text-align:left">';
+						echo '<div style="font-size:1.75em; font-weight:bold;">' . $campaign['copied_head'] . '</div>';
+						/* NOTES: Requires more research...
+						echo '<div class="ui-grid-a">';
+							echo '<div class="ui-block-a"></div>';
+							echo '<div class="ui-block-b"><button type="button" data-icon="plus" data-iconpos="right" data-mini="true" data-inline="true" id="expand">' . $this->dict['READ_FULL'] . '</button></div>';
+						echo '</div>';
+						*/
+						echo '<div data-role="collapsibleset" data-theme="a" data-content-theme="a" id="set">';
+							echo '<div data-role="collapsible" data-collapsed="true">';
+								echo '<h3>' . $this->dict['READ_FULL'] . '</h3>';
+								echo '<p style="text-align:left;">' . $campaign['copied_full'] . '</p>';
+							echo '</div>';
+						echo '</div>';
+					echo '</div>';
+				}
+				if( !$this->thankyou )
+				{
+					// ------ ALREADY_SUPPORT -------
+					if( $campaign['already_support'] ) {
+						echo '<div class="ui-body ui-body-a">';						
+							echo '<img src="' . $this->image_root . 'tick.png" width="100" align="left"><br/>';
+							echo Utils::resolveTag($this->dict['ALREADY_SUPPORT'], array(
+								'[NAME]' => $_SESSION['me']['first_name'] . ' ' . $_SESSION['me']['last_name']
+							));
+						echo '</div>';
+					}
+					else
+					{
+						echo '<div class="ui-body ui-body-a" style="background-color:#f5f5f5">';
+							// ------ FB LOGIN -------
+							if( !isset($_SESSION['me']) )
+							{
+								echo '<form style="max-width:350px" id="campaign-fblogin_form1" action="'.$this->self.'" method="post">';
+									echo '<input type="hidden" name="command" value="fblogin" />';
+								echo '</form>';
+								echo "<a href='javascript:fblogin(\"campaign-fblogin_form1\")' class='ui-btn ui-shadow ui-corner-all'>";
+									echo $this->dict['FB_LOGIN'];
+								echo '</a>';
+								echo '<p style="text-align:center;">-' . $this->dict['OR'] . '-</p>';
+							}
+							echo '<form id="form-campaign-index" action="' . $this->self .'/index/id/' . $this->id . '" method="post">';
+							// ------ REGISTER -------
+							if( !isset($_SESSION['me']) )
+							{
+								$email = isset($this->email)? $this->email : "";
+								$password = isset($this->password)? $this->password : "";
+								$first_name =  isset($this->first_name)? $this->first_name : "";
+								$last_name = isset($this->last_name)? $this->last_name : "";
+								$yearofbirth = isset($this->yearofbirth)? $this->yearofbirth : "";
+								
+								echo '<input type="text" name="first_name" id="textinput-1" placeholder="' . $this->dict['NAME'] . '*" value="'.$first_name.'" pattern=".{1,}" required>';
+								echo '<input type="text" name="last_name" id="textinput-2" placeholder="' . $this->dict['LAST_NAME'] . '*" value="'.$last_name.'" pattern=".{1,}" required>';
+								echo '<input type="email" name="email" id="textinput-3" placeholder="' . $this->dict['EMAIL'] . '*" value="'.$email.'" required>';
+								echo '<input type="password" name="password" id="textinput-4" style="font-size:0.65em;" placeholder="' . $this->dict['PASSWORD'] . '* ' . $this->dict['PASSWORD_REQUIREMENT'] . '" value="'.$password.'" pattern=".{4,12}" required>';
+								echo '<input type="text" name="yearofbirth" id="textinput-5" style="font-size:0.65em;" placeholder="' . $this->dict['YEAR_OF_BIRTH_PLACEHOLDER'] . '" value="'.$yearofbirth.'" pattern=".{4,4}" required>';
+								if( isset($this->all_countries[0]) )
+								{
+									echo '<div class="ui-field-contain">';
+										echo $this->dict['NATIONALITY'] . ':';
+										echo '<select name="select-native-nationality" id="select-native-nationality">';
+											foreach( $this->all_countries as $i => $c )
+											{
+												echo '<option value="' . $c['name'] . '"' . ($c['alpha2Code'] == strtoupper($this->language) ? ' selected' : '') . '>' . $c['name'] . '</option>';
+											}
+										echo '</select>';
+									echo '</div>';
+								}
+								echo '<p style="font-size:0.65em;">';
+									echo $this->dict['ALREADY_HAVE_ACCOUNT'] . '? <a href="' . $this->self_root . 'signin" rel="external">' . $this->dict['SIGN_IN'] . '</a>.';
+								echo '</p>';
+							}
+							// ------ ENCOURAGE -------
+							else
+							{
+								echo '<p style="font-size:0.8em;">';
+								echo Utils::resolveTag($this->dict['SIGNATURES_ENCOURAGEMENT'], array(
+									'[NAME]' => $_SESSION['me']['first_name'] . ' ' . $_SESSION['me']['last_name']
+								));
+								echo '</p>';
+							}
+							// Comment, Show name & FB share option
+							echo '<div class="ui-field-contain">';
+								echo '<textarea cols="40" rows="8" name="textarea-comment" id="textarea-comment" style="font-size:0.65em"; placeholder="' . $this->dict['COMMENT_PLACEHOLDER'] . '"></textarea>';
+								if( isset($_SESSION['me']['fb_token']) && $_SESSION['me']['fb_token'] )
+								{
+									echo '<fieldset data-role="controlgroup" data-mini="true">';
+										echo '<label for="checkbox-fbshare">' . $this->dict['SHARE_THIS_ON_FACEBOOK'] . '</label>';
+										echo '<input type="checkbox" name="checkbox-fbshare" id="checkbox-fbshare">';
+									echo '</fieldset>';						
+								}
+								if( !isset($_SESSION['me']) )
+									echo '<input type="hidden" name="command" value="register" />';
+								else echo '<input type="hidden" name="command" value="support" />';
+								
+								echo '<input type="submit" style="font-size:1.2em;" value="' . $this->dict['SIGN_TO_SUPPORT'] . '" data-theme="d" data-iconpos="right" data-icon="carat-r">';
+								echo '<fieldset data-role="controlgroup" data-mini="true">';
+									echo '<label for="checkbox-showname">' . $this->dict['SHOW_MY_NAME'] . '</label>';
+									echo '<input type="checkbox" name="checkbox-showname" id="checkbox-showname" checked="checked">';
+								echo '</fieldset>';
+							echo '</div>';
+							echo '</form>';
+						echo '</div>';
+						if( isset($_SESSION['me']['fb_token']) && $_SESSION['me']['fb_token'] )
+						{
+							echo '<div class="ui-body ui-body-a" style="background-color:#f5f5f5">';
+								echo '<div style="font-size:0.65em;">' . $this->dict['FB_LOGIN_AGREEMENT'] . '</div>';						
+							echo '</div>';							
+						}
+					}
+				}
+				else
+				{
+					if( $this->error )
+					{
+						echo '<div style="padding:15px 4px 15px 4px; text-align:left; font-size:1.5em; font-weight:bold;">';
+							echo $this->dict['ERROR_SUPPORT.HEAD'];
+						echo '</div>';
+						echo '<div class="ui-body ui-body-a">';
+							echo '<div style="font-size:0.75em;">';
+								echo $this->error;
+							echo '</div>';
+						echo '</div>';
+						echo '<p><a href="' . $this->self . '/index/id/' . $this->id . '" class="ui-btn ui-btn-c ui-corner-all">' . $this->dict['OK'] . '</a></p>';
+					}
+					else
+					{
+						echo '<div style="padding:15px 4px 15px 4px; text-align:left; font-size:1.5em; font-weight:bold;">';
+							echo $this->dict['THANKS_FOR_SUPPORT.HEAD'];
+						echo '</div>';
+						echo '<div class="ui-body ui-body-a">';
+							echo '<div style="font-size:0.75em;">';
+							echo Utils::resolveTag( $this->dict['THANKS_FOR_SUPPORT.DETAIL'], array(
+								'[NAME]' 	=> $_SESSION['me']['first_name'] . ' ' . $_SESSION['me']['last_name'],
+								'[COUNTRY]' => $countries,
+								'[IMAGE]'	=> '<img src="' . $this->image_root . 'lotus-64.png">',
+							));
+							echo '</div>';
+						echo '</div>';
+						echo '<br/>';
+					}
+				}
+				$show_other_campaign = false;
+				if( !$this->error
+					&& ($this->thankyou || $campaign['already_support']) )
+				{
+					foreach( $this->campaign as $i => $data )
+					{
+						if( $data['campaign_id'] != $this->id
+							&& !$data['already_support'] )
+						{
+							echo '<hr/>';
+							echo '<h3>' . $this->dict['OTHER_CAMPAIGN'] . '</h3>';
+							echo '<br/>';
+							echo '<div class="ui-bar ui-bar-a">' . $data['title'] . '</div>';
+							echo '<a href="' . $this->self . '/index/id/' . $data['campaign_id'] . '" rel="external"><img src="' . $data['image'] . '" style="max-width:240px;"></a>';
+							echo '<p style="text-align:left;"><br/>' . $data['brief'] . '</p>';
+							echo '<div class="ui-grid-a">';
+								echo '<div class="ui-block-a"></div>';
+								echo '<div class="ui-block-b"><a href="' . $this->self . '/index/id/' . $data['campaign_id'] . '" class="ui-btn ui-btn-d ui-corner-all ui-icon-carat-r ui-btn-icon-right" rel="external"><big><big>' . $this->dict['SIGN'] . '</big></big></a></div>';
+							echo '</div>';
+							$show_other_campaign = true;
+							break;
+						}
+					}
+				}
+				
+				if( isset($this->recent_signatures[0])
+					&& (!$this->thankyou || !$show_other_campaign) )
+				{
+					echo '<hr/>';
+					echo '<h3>' . $this->dict['RECENT_SIGNATURES'] . '</h3>';
+					echo '<br/>';
+					echo '<div class="ui-bar ui-bar-a ui-corner-all"">';
+						foreach( $this->recent_signatures as $c )
+						{
+							echo '<div style="text-align:left; padding-top:5px;">';
+								echo '<h3>' . $c['name'] . '</h3>';
+								echo '<p>' . $c['period'] . '</p>';
+							echo '</div>';
+						}
+					echo '</div>';							
+				}
+				echo '</div></div>';
+			}
+		if( !$this->mobile_view ) echo '</div>';
+	echo '</div>';
+	echo '<hr/>';
+	echo '<br/>';
+	echo '<div style="font-size:1.25em; font-weight:bold">' . $this->dict['CAMPAIGN_UPDATE'] . '</div>';
+	echo '</center>';
+	// CODYHOUSE TIMELINE (Wide Screen Only)
+	if( isset($this->timeline[0]) )
+	{
+		echo '<div style="background-color:#e9f0f5;">';
+			echo '<section id="cd-timeline" class="cd-container">';
+			foreach( $this->timeline as $k => $data )
+			{								
+				echo '<div class="cd-timeline-block">';
+					echo '<div class="cd-timeline-img ' . $data['icon_color'] . '">';
+						echo '<img src="' . $this->image_root . $data['icon'] . '" alt="Picture">';
+					echo '</div>';
+					echo '<div class="cd-timeline-content" style="text-align:left;">';
+						//echo '<h2>' . $data['name'] . '</h2>';
+						//echo '<p>' . $data['content'] . '</p>';
+						if( $data['image'] )
+						{
+							echo $data['image_url'] ? '<a href="' . $data['image_url'] . '">' : '';
+							echo '<img src="' . $data['image'] . '" align="right" hspace="3" style="max-height:160px;">';
+							echo $data['image_url'] ? '</a>' : '';
+						}
+						echo '<div style="font-size:1.2em; font-weight:bold;">' . $data['name'] . '</div><br/>';
+						echo $data['content'];
+						
+						//<a href="#0" class="cd-read-more">Read more</a>
+						//<span class="cd-date">Jan 14</span>
+					echo '</div>';
+				echo '</div>';
+			}
+			echo '</section>';	
+		echo '</div>';
+	}
+	if( $this->mobile_view )
+	{
+		echo '<p style="padding:10px;"><a href="' . $this->self_root . '" class="ui-btn ui-btn-c ui-shadow ui-corner-all" rel="external">' . $this->dict['BACK'] . '</a></p>';		
+	}
+	// FOOTER
+	include 'footer_div.phtml';
+echo '</div>';
+?>
+<?php include 'footer.phtml';?>

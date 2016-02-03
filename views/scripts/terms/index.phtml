@@ -1,0 +1,43 @@
+<?php include 'header.phtml';?>
+<?php
+	// PAGE I [HOME] ---------------------------------------------------------------------------------------------------
+	echo '<div data-role="page" id="terms-index">';
+		// HEADER
+		include 'header_div.phtml';
+		// CONTENT
+		echo '<center>';
+		echo '<div role="main" class="ui-content" style="max-width:800px">';
+		if( !$this->mobile_view )
+			echo '<img src="' . $this->image_root . $this->language . '/title-short.png" width="75%" style="max-width:600px; padding:80px 0px 80px 0px;"/>';
+
+			//echo '<div class="ui-body">';
+				echo '<h1>TERMS & CONDITIONS</h1>';
+				echo '<div class="ui-corner-all custom-corners">';
+					//echo '<div class="ui-bar ui-bar-a">';
+					//	echo '<h2>BUDDHA disrespectful crisis!</h2>';
+					//echo '</div>';
+					//echo '<div class="ui-body ui-body-a">';
+						echo '<p style="text-align:left">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>';
+						echo '<p style="text-align:left">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>';echo '<p style="text-align:left">Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?</p>';
+						echo '<p style="text-align:left">Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?.</p>';
+					//echo '</div>';
+				echo '</div>';
+				if( !$this->mobile_view )
+				{
+					echo '<p style="text-align:left;">';
+						echo '<a href="' . $this->self_root . '" rel="external">' . $this->dict['BACK'] . '</a> &middot; ';
+						if( $this->language == 'en' )
+							echo '<a href="' . $this->self . '?language=th">' . $this->dict['THAI'] . '</a>';
+						else  echo '<a href="' . $this->self . '?language=en">' . $this->dict['ENGLISH'] . '</a>';
+					echo '</p>';
+				}
+				else
+					echo '<a href="' . $this->self_root . '" class="ui-btn ui-btn-c ui-corner-all" rel="external">' . $this->dict['BACK'] . '</a>';				
+			//echo '</div>';
+		echo '</div>';
+		echo '</center>';
+		// FOOTER
+		include 'footer_div.phtml';
+	echo '</div>';
+?>
+<?php include 'footer.phtml';?>

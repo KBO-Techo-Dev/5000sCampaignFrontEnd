@@ -1,0 +1,52 @@
+<?php include 'header.phtml';
+	$target_id = isset($this->page) ? "#". $this->page : "";
+?>
+<?php
+	$email = isset($this->email)? $this->email : "";
+	$password = isset($this->password)? $this->password : "";
+	$first_name =  isset($this->first_name)? $this->first_name : "";
+	$last_name = isset($this->last_name)? $this->last_name : "";
+	// PAGE I [SIGNIN] ---------------------------------------------------------------------------------------------------
+	echo '<div data-role="page" id="signin-index">';
+		// HEADER
+		include 'header_div.phtml';
+		// CONTENT
+		echo '<center>';
+		echo '<div role="main" class="ui-content" style="max-width:480px">';
+			echo '<div class="ui-body ui-body-a ui-corner-all" style="background-color:white">';
+			
+				if(isset($this->error))
+				{
+					echo '<p>' . $this->error . '</p>';
+				}
+				if(isset($this->message))
+				{
+					echo '<p>' . $this->message . '</p>';
+				} else {
+					echo '<h1>' . $this->dict['SIGN_IN'] . '</h1>';
+					echo '<form style="max-width:350px" id="sigin-fblogin_form1" action="'.$this->self.'" method="post">';
+						echo '<input type="hidden" name="command" value="fblogin" />';
+					echo '</form>';
+					echo "<a href='javascript:fblogin(\"sigin-fblogin_form1\")'>";
+						echo '<img src="' . $this->image_root . 'fb-login-button.png" alt="fb-login" width="100%" style="max-width:400px"/>';
+					echo '</a>';
+					echo '<br/><font color="#CCCCCC">------------------- ' . $this->dict['OR'] . ' -------------------</font>';
+					echo '<form style="max-width:350px" id="form-signin-index" action="'.$this->self.'" method="post">';
+						echo '<input type="email" name="email" id="textinput-1" placeholder="' . $this->dict['EMAIL'] . '" value="'.$email.' " required>';
+						echo '<input type="password" name="password" id="textinput-2" placeholder="' . $this->dict['PASSWORD'] . '" value="'.$password.'" required>';
+						echo '<input type="hidden" name="command" value="login" />';
+						echo $this->dict['DID_YOU'] . ' <a href="' . $this->self . '/forget">' . $this->dict['FORGET_PASSWORD'] . '</a>?';
+						echo '<p><input type="submit" value="' . $this->dict['SIGN_IN'] . '" data-theme="c"></p>';
+					echo '</form>';		
+					echo $this->dict['DONT_HAVE_ACCOUNT'] . '? <a href="' . $this->self . '/register" data-transition="none">' . $this->dict['REGISTER'] . '</a>.';
+					echo '<hr/>';
+					echo '<p><small>' . $this->dict['FB_LOGIN_AGREEMENT'] . '</small></p>';
+				}
+			echo '</div>';
+		echo '</div>';
+		echo '</center>';
+		// FOOTER
+		include 'footer_div.phtml';
+	echo '</div>';
+?>
+<?php include 'footer.phtml';?>

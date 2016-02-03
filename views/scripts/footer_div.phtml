@@ -1,0 +1,11 @@
+<?php
+echo '<div data-role="footer" style="text-align:center; padding:5px">';
+	echo '<small>';
+	echo '<a href="' . $this->self_root . 'terms">' . $this->dict['TERMS'] . '</a>';
+	echo ' | ';
+	echo '<a href="' . $this->self_root . 'privacy">' . $this->dict['PRIVACY_POLICY'] . '</a>';
+	echo '<br/>' . $this->dict['LANGUAGE'] . ' <a href="' . $this->self . '?language=th" rel="external">' . $this->dict['THAI'] . '</a>&nbsp;&nbsp;<a href="' . $this->self . '?language=en" rel="external">' . $this->dict['ENGLISH'] . '</a>';
+	echo '<br/>&copy; ' . $this->dict['KNOWING_BUDDHA_ORGANIZATION'] . ' 2013';
+	echo '</small>';
+echo '</div>';
+?>

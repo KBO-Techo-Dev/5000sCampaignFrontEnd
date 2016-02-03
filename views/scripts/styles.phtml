@@ -1,0 +1,267 @@
+<style>
+body{
+	background:#FFFFFF;
+}
+div#one {
+	margin: 0 1%;
+	float: left;
+}
+#one {width: 100%}
+/* Basic styles */
+.rwd-half .ui-body {
+    text-align: left;
+    border-color: #ddd;
+}
+.rwd-half p {
+    color: #777;
+    line-height: 140%
+}
+/* Stack all blocks to start */
+.rwd-half .ui-block-a,
+.rwd-half .ui-block-b,
+.rwd-half .ui-block-c {
+    width: 100%;
+    float: none;
+}
+/* Collapsing borders */
+.rwd-half > div + div .ui-body {
+    border-top-width: 0;
+}
+/* 1st breakpoint - Float B and C, leave A full width on top */
+@media all and (min-width: 42em) {
+    .rwd-half {
+        overflow: hidden; /* Use this or a "clearfix" to give the container height */
+    }
+    .rwd-half .ui-body {
+       min-height: 8em;
+    }
+    .rwd-half .ui-block-b,
+    .rwd-half .ui-block-c {
+      float: left;
+      width: 49.95%;
+    }
+    .rwd-half .ui-block-b p,
+    .rwd-half .ui-block-c p {
+      font-size: .8em;
+    }
+    .rwd-half > div + div .ui-body {
+        border-top-width: 1px;
+    }
+    .rwd-half > div:first-child .ui-body {
+        border-bottom-width: 0;
+    }
+    .rwd-half > div:last-child .ui-body {
+        border-left-width: 0;
+    }
+}
+/* 2nd breakpoint - Float all, 50/25/25 */
+@media all and (min-width: 55em) {
+    .rwd-half .ui-body {
+       min-height: 12em;
+    }
+    .rwd-half .ui-block-a,
+    .rwd-half .ui-block-c {
+      float: left;
+      width: 49.95%;
+    }
+    .rwd-half .ui-block-b,
+    .rwd-half .ui-block-c {
+      float: left;
+      width: 49.85%;
+    }
+    .rwd-half > div:first-child .ui-body {
+        border-bottom-width: 1px;
+    }
+    .rwd-half > div + div .ui-body {
+        border-left-width: 0;
+    }
+}
+/* 3rd breakpoint - Bump up font size at very wide screens */
+@media all and (min-width: 75em) {
+    .rwd-half .ui-body {
+      font-size: 125%;
+    }
+    .rwd-half .ui-block-a,
+    .rwd-half .ui-block-c {
+      float: left;
+      width: 49.95%;
+    }
+    .rwd-half .ui-block-b,
+    .rwd-half .ui-block-c {
+      float: left;
+      width: 49.85%;
+    }
+}
+/* Basic styles */
+.rwd-onethird .ui-body {
+    text-align: left;
+    border-color: #ddd;
+}
+.rwd-onethird p {
+    color: #777;
+    line-height: 140%
+}
+/* Stack all blocks to start */
+.rwd-onethird .ui-block-a,
+.rwd-onethird .ui-block-b,
+.rwd-onethird .ui-block-c {
+    width: 100%;
+    float: none;
+}
+/* Collapsing borders */
+.rwd-onethird > div + div .ui-body {
+    border-top-width: 0;
+}
+/* 1st breakpoint - Float B and C, leave A full width on top */
+@media all and (min-width: 42em) {
+    .rwd-onethird {
+        overflow: hidden; /* Use this or a "clearfix" to give the container height */
+    }
+    .rwd-onethird .ui-body {
+       min-height: 14em;
+    }
+    .rwd-onethird .ui-block-b,
+    .rwd-onethird .ui-block-c {
+      float: left;
+      width: 66.55%;
+    }
+    .rwd-onethird .ui-block-b p,
+    .rwd-onethird .ui-block-c p {
+      font-size: .8em;
+    }
+    .rwd-onethird > div + div .ui-body {
+        border-top-width: 1px;
+    }
+    .rwd-onethird > div:first-child .ui-body {
+        border-bottom-width: 0;
+    }
+    .rwd-onethird > div:last-child .ui-body {
+        border-left-width: 0;
+    }
+}
+/* 2nd breakpoint - Float all, 50/25/25 */
+@media all and (min-width: 55em) {
+    .rwd-onethird .ui-body {
+       min-height: 5em;
+    }
+    .rwd-onethird .ui-block-a,
+    .rwd-onethird .ui-block-c {
+      float: left;
+      width: 66.55%;
+    }
+    .rwd-onethird .ui-block-b,
+    .rwd-onethird .ui-block-c {
+      float: left;
+      width: 33.25%;
+    }
+    .rwd-onethird > div:first-child .ui-body {
+        border-bottom-width: 1px;
+    }
+    .rwd-onethird > div + div .ui-body {
+        border-left-width: 0;
+    }
+}
+/* 3rd breakpoint - Bump up font size at very wide screens */
+@media all and (min-width: 75em) {
+    .rwd-onethird .ui-body {
+      font-size: 125%;
+    }
+    .rwd-onethird .ui-block-a,
+    .rwd-onethird .ui-block-c {
+      float: left;
+      width: 66.55%;
+    }
+    .rwd-onethird .ui-block-b,
+    .rwd-onethird .ui-block-c {
+      float: left;
+      width: 33.25%;
+    }
+}
+/* Basic styles */
+.rwd-onefourth .ui-body {
+    text-align: left;
+    border-color: #ddd;
+}
+.rwd-onefourth p {
+    color: #777;
+    line-height: 140%
+}
+/* Stack all blocks to start */
+.rwd-onefourth .ui-block-a,
+.rwd-onefourth .ui-block-b,
+.rwd-onefourth .ui-block-c {
+    width: 100%;
+    float: none;
+}
+/* Collapsing borders */
+.rwd-onefourth > div + div .ui-body {
+    border-top-width: 0;
+}
+/* 1st breakpoint - Float B and C, leave A full width on top */
+@media all and (min-width: 42em) {
+    .rwd-onefourth {
+        overflow: hidden; /* Use this or a "clearfix" to give the container height */
+    }
+    .rwd-onefourth .ui-body {
+       min-height: 14em;
+    }
+    .rwd-onefourth .ui-block-b,
+    .rwd-onefourth .ui-block-c {
+      float: left;
+      width: 74.875%;
+    }
+    .rwd-onefourth .ui-block-b p,
+    .rwd-onefourth .ui-block-c p {
+      font-size: .8em;
+    }
+    .rwd-onefourth > div + div .ui-body {
+        border-top-width: 1px;
+    }
+    .rwd-onefourth > div:first-child .ui-body {
+        border-bottom-width: 0;
+    }
+    .rwd-onefourth > div:last-child .ui-body {
+        border-left-width: 0;
+    }
+}
+/* 2nd breakpoint - Float all, 50/25/25 */
+@media all and (min-width: 55em) {
+    .rwd-onefourth .ui-body {
+       min-height: 5em;
+    }
+    .rwd-onefourth .ui-block-a,
+    .rwd-onefourth .ui-block-c {
+      float: left;
+      width: 74.875%;
+    }
+    .rwd-onefourth .ui-block-b,
+    .rwd-onefourth .ui-block-c {
+      float: left;
+      width: 24.925%;
+    }
+    .rwd-onefourth > div:first-child .ui-body {
+        border-bottom-width: 1px;
+    }
+    .rwd-onefourth > div + div .ui-body {
+        border-left-width: 0;
+    }
+}
+/* 3rd breakpoint - Bump up font size at very wide screens */
+@media all and (min-width: 75em) {
+    .rwd-onefourth .ui-body {
+      font-size: 125%;
+    }
+    .rwd-onefourth .ui-block-a,
+    .rwd-onefourth .ui-block-c {
+      float: left;
+      width: 74.875%;
+    }
+    .rwd-onefourth .ui-block-b,
+    .rwd-onefourth .ui-block-c {
+      float: left;
+      width: 24.925%;
+    }
+}
+.fadein { position:relative; width:100%; }
+.fadein img { position:absolute; left:0; top:0; }
+</style>

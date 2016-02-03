@@ -1,0 +1,41 @@
+<?php include 'header.phtml';?>
+<?php
+	$email = isset($this->email) ? $this->email : "";
+	
+	// PAGE III [FORGET] ---------------------------------------------------------------------------------------------------
+	echo '<div data-role="page" id="signin-forget">';
+		// HEADER
+		include 'header_div.phtml';
+		// CONTENT
+		echo '<center>';
+		echo '<div role="main" class="ui-content" style="max-width:480px">';
+			echo '<div class="ui-body ui-body-a ui-corner-all">';
+				echo '<h1>' . $this->dict['FORGET_PASSWORD.HEAD'] . '</h1>';
+				if( $this->email_has_been_sent )
+				{
+					echo str_replace( '[EMAIL]', $email, $this->dict['PASSWORD_HAS_BEEN_SENT'] );
+				}
+				else {
+					if( $this->email_not_found )
+					{
+						echo '<p><font color="red">' . $this->dict['EMAIL_NOT_FOUND'] . '</font></p>';
+						//echo 'result: <br/>';
+						//print_r( $this->result );
+					}
+				
+					echo '<p>' . $this->dict['FORGET_PASSWORD.GUIDE'] . '</p>';
+					echo '<form>';
+						echo '<input type="email" name="email" id="textinput-3" placeholder="' . $this->dict['EMAIL'] . '*" value="'.$email.'" required>';
+						echo '<input type="hidden" name="command" value="forget" />';
+						echo '<p><input type="submit" value="' . $this->dict['REQUEST_EMAIL'] . '" data-theme="c"></p>';
+					echo '</form>';					
+				}
+				echo '<a href="' . $this->self_root . '" class="ui-btn ui-btn-a ui-corner-all">' . $this->dict['BACK'] . '</a>';
+			echo '</div>';
+		echo '</div>';
+		echo '</center>';
+		// FOOTER
+		include 'footer_div.phtml';
+	echo '</div>';
+?>
+<?php include 'footer.phtml';?>

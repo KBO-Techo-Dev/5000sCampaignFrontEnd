@@ -1,0 +1,147 @@
+<?php include 'header.phtml';?>
+<?php
+	$id = $this->id;
+	$prev_id = $this->prev_id;
+	$next_id = $this->next_id;
+	
+	$slideshow_hegith = 400 * ($_SESSION['screen_width']/640);
+	if( $slideshow_hegith < 320 ) $slideshow_hegith = 320;
+	if( $slideshow_hegith > 440 ) $slideshow_hegith = 440;
+
+	// PAGE I [HOME] ---------------------------------------------------------------------------------------------------
+	echo '<div data-role="page" id="news-index">';
+		// HEADER
+		include 'header_div.phtml';
+		// CONTENT
+		echo '<center>';
+		echo '<div role="main" class="ui-content" style="max-width:1024px;">';
+		if( !$this->mobile_view )
+			echo '<img src="' . $this->image_root . $this->language . '/title-short.png" width="75%" style="max-width:600px; padding:80px 0px 80px 0px;"/>';
+		
+		echo '<h1>' . $this->dict['NEWS'] . '</h1>';
+		echo '<div class="rwd-onethird">';
+			echo '<div class="ui-block-a">';
+				echo '<div style="width:90%; background-color:#ffffff;">';
+					foreach( $this->news as $i => $data )
+					{
+						if( $data['news_id'] == $id )
+						{
+							//echo '<div class="ui-corner-all custom-corners" style="background:url(' . $this->image_root . 'lotus-512.png);">';
+								echo '<div class="ui-bar ui-bar-a">';
+									echo '<h2><big><big>' . $data['title'] . '</big></big></h2>';
+								echo '</div>';
+								if( $data['author'] )
+								{
+									echo '<p style="text-align:right; padding:0px 10px 0px 0px;">' . $this->dict['AUTHOR'] . ': ';
+										echo $data['author_url'] != '#' ? '<a href="' . $data['author_url'] . '">' : '';
+										echo $data['author'];
+										echo $data['author_url'] != '#' ? '</a>' : '';
+									echo '</p>';							
+								}
+								echo '<p style="text-align:right; padding:0px 10px 0px 0px;">' . $this->dict['DATE'] . ': ' . $data['date'] . '</p>';
+								if ($data['news_id'] == 6)
+								{
+									echo '<div class="fadein" style="height:' . $slideshow_hegith . 'px">';
+										for( $i=1; $i<=5; $i++ )
+											echo '<img src="' . $this->image_root . 'news/' . $data['news_id'] . '/' . $i . '.jpg" width="100%" style="max-width:690px;">';
+									echo '</div>';
+?>
+									<script>
+										$(function(){
+											$('.faderandom > :gt(0)').hide();
+											setInterval(function(){
+												var rand = Math.floor(Math.random() * ($('.faderandom').children().length-1));
+												$('.faderandom > :first-child').appendTo('.faderandom').fadeOut();
+												$('.faderandom > *').eq(rand).prependTo('.faderandom').fadeIn();
+											}, 6000);
+										});
+									</script>
+<?php
+								}
+								else
+								{
+									echo '<img src="' . $data['image'] . '" width="100%" style="max-width:720px"/>';									
+								}
+								echo '<p style="text-align:left; padding:10px; color:#000000;">' . $data['detail'] . '</p>';
+								/* [REMOVED] due to show it in another column instead.
+								if( $prev_id > 0 )
+									echo '<a href="' . $this->self . '/index/id/' . $prev_id . '" class="ui-btn ui-btn-inline ui-icon-arrow-l" ui-btn-icon-left">' . $this->dict['PREVIOUS'] . '</a>';
+								if( $next_id > 0 )
+									echo '<a href="' . $this->self . '/index/id/' . $next_id . '" class="ui-btn ui-btn-inline ui-icon-arrow-r" ui-btn-icon-left">' . $this->dict['NEXT'] . '</a>';
+								*/
+							//echo '</div>';
+							if( !$this->mobile_view )
+							{
+								//echo '<br/><p><a href="' . $this->self_root . '" class="ui-btn ui-btn-c ui-corner-all">' . $this->dict['BACK'] . '</a></p><br/>';
+								echo '<p style="text-align:left; padding:10px;">';
+									echo '<a href="' . $this->self_root . '" rel="external">' . $this->dict['BACK'] . '</a> &middot; ';
+									if( $this->language == 'en' )
+										echo '<a href="' . $this->self . '?language=th">' . $this->dict['THAI'] . '</a>';
+									else  echo '<a href="' . $this->self . '?language=en">' . $this->dict['ENGLISH'] . '</a>';
+								echo '</p>';
+							}
+							// exit loop
+							break;					
+						}					
+					}
+				echo '</div>';
+			echo '</div>';
+			echo '<div class="ui-block-b" style="border-left:4px solid #dddddd; background-color:#f5f5f5;">';
+				echo '<div style="width:90%">';
+					if( !$this->mobile_view )
+					{
+						$counter = 0;
+						foreach( $this->news as $i => $data )
+						{
+							if( $data['news_id'] == $id )
+								continue;
+							
+							echo '<div class="ui-corner-all custom-corners">';
+							//echo '<div class="ui-bar ui-bar-a">';
+							echo '<h3>' . $data['date'] . '</h3>';
+							//echo '</div>';
+							echo '<div class="ui-body ui-body-a>">';
+								echo '<a href="' . $this->self . '/index/id/' . $data['news_id'] . '"><img src="' . $data['image'] . '" style="max-width:270px;"/></a>';
+								echo '<p style="text-align:left;">' . $data['brief'] . '</p>';
+								echo '<p style="text-align:right; font-size:1.1em;"><a href="' . $this->self . '/index/id/' . $data['news_id'] . '">' . $this->dict['READ_MORE'] . '</a></p>';
+							echo '</div>';
+							echo '</div>';
+							
+							if( ++$counter > 2 )
+								break;
+						}						
+					}
+					if( $this->mobile_view )
+						echo '<hr/>';
+
+					echo '<h3>' . $this->dict['OTHER_NEWS'] . '</h3>';
+					echo '<br/>';
+					$counter = 0;
+					foreach( $this->news as $i => $data )
+					{
+						if( $data['news_id'] == $id )
+							continue;
+						
+						if( $counter == 0 ) echo '<ul data-role="listview">';
+
+						echo '<li><a href="' . $this->self . '/index/id/' . $data['news_id'] . '"><div style="white-space:normal">' . $data['title'] . '</div></a></li>';
+						
+						if( ++$counter > 6 )
+							break;
+					}
+					if( $counter > 0 ) echo '</ul>';
+					
+					if( $this->mobile_view )
+						echo '<br/><p><a href="' . $this->self_root . '" class="ui-btn ui-btn-c ui-corner-all" rel="external">' . $this->dict['BACK'] . '</a></p><br/>';
+					
+					echo '<br/>';
+				echo '</div>';
+			echo '</div>';
+		echo '</div>';
+		echo '</div>';
+		echo '</center>';
+		// FOOTER
+		include 'footer_div.phtml';
+	echo '</div>';
+?>
+<?php include 'footer.phtml';?>

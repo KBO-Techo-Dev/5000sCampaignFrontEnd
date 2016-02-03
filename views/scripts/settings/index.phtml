@@ -1,0 +1,74 @@
+<?php include 'header.phtml';?>
+<?php
+	// PAGE I [HOME] ---------------------------------------------------------------------------------------------------
+	echo '<div data-role="page" id="settings-index">';
+		// HEADER
+		include 'header_div.phtml';
+		// CONTENT
+		echo '<center>';
+		echo '<div role="main" class="ui-content" style="max-width:800px">';
+		if( !$this->mobile_view )
+			echo '<img src="' . $this->image_root . $this->language . '/title-short.png" width="75%" style="max-width:600px; padding:80px 0px 80px 0px;"/>';
+
+			//echo '<p style="text-align:left"><a href="#">Your Profile</a> <small>>></small> Account Settings</p>';
+			echo '<div class="ui-body ui-corner-all" style="background-color:white">';
+				echo '<h1>' . $this->dict['SETTINGS'] . '</h1>';
+
+				echo '<div class="rwd-example">';
+					echo '<div class="ui-block-a">';
+						echo '<div class="ui-body">';
+							echo '<img src="' . $this->image_root . 'default-user.png" style="max-width:220px;"/>';
+						echo '</div>';
+					echo '</div>';
+					echo '<div class="ui-block-b">';
+						echo '<div class="ui-body ui-body-a ui-corner-all">';
+							echo '<h2><font color="red">' . $this->dict['IMPORTANT'] . '</font></h2>';
+							echo '<p style="white-space:normal; text-align:left;">' . $this->dict['SETTINGS_UNDER_CONSTRUCTION'] . '</p>';
+						echo '</div>';					
+						echo '<ul data-role="listview" data-inset="true">';
+							echo '<li data-icon="gear" style="max-width:480px;"><a href="#">';
+								echo '<h2>' . $this->dict['SETTINGS_PROFILE.HEAD'] . '</h2>';
+								echo '<p style="white-space:normal;">' . $this->dict['SETTINGS_PROFILE.BRIEF'] . '</p>';
+							echo '</a></li>';
+							echo '<li data-icon="edit" style="max-width:480px;"><a href="#">';
+								echo '<h2>' . $this->dict['SETTINGS_PASSWORD.HEAD'] . '</h2>';
+								echo '<p style="white-space:normal;">' . $this->dict['SETTINGS_PASSWORD.BRIEF'] . '</p>';
+							echo '</a></li>';
+							echo '<li data-icon="mail" style="max-width:480px;"><a href="#">';
+								echo '<h2>' . $this->dict['SETTINGS_MANAGE_EMAIL.HEAD'] . '</h2>';
+								echo '<p style="white-space:normal;">' . $this->dict['SETTINGS_MANAGE_EMAIL.BRIEF'] . '</p>';
+							echo '</a></li>';
+							echo '<li data-icon="eye" style="max-width:480px;"><a href="#">';
+								echo '<h2>' . $this->dict['SETTINGS_PRIVACY.HEAD'] . '</h2>';
+								echo '<p style="white-space:normal;">' . $this->dict['SETTINGS_PRIVACY.BRIEF'] . '</p>';
+							echo '</a></li>';
+							echo '<li data-icon="heart" style="max-width:480px;"><a href="#">';
+								echo '<h2>' . $this->dict['SETTINGS_EMAIL_PREFERENCE.HEAD'] . '</h2>';
+								echo '<p style="white-space:normal;">' . $this->dict['SETTINGS_EMAIL_PREFERENCE.BRIEF'] . '</p>';
+							echo '</a></li>';
+							echo '<li data-icon="delete" style="max-width:480px;"><a href="#">';
+								echo '<h2>' . $this->dict['SETTINGS_CLOSE_ACCOUNT.HEAD'] . '</h2>';
+								echo '<p style="white-space:normal;">' . $this->dict['SETTINGS_CLOSE_ACCOUNT.BRIEF'] . '</p>';
+							echo '</a></li>';
+						echo '</ul>';
+					echo '</div>';
+				echo '</div>';
+			echo '</div>';
+			if( !$this->mobile_view )
+			{
+				echo '<p style="text-align:left;">';
+					echo '<a href="' . $this->self_root . '" rel="external">' . $this->dict['BACK'] . '</a> &middot; ';
+					if( $this->language == 'en' )
+						echo '<a href="' . $this->self . '?language=th">' . $this->dict['THAI'] . '</a>';
+					else  echo '<a href="' . $this->self . '?language=en">' . $this->dict['ENGLISH'] . '</a>';
+				echo '</p>';
+			}
+			else
+				echo '<a href="' . $this->self_root . '" class="ui-btn ui-btn-c ui-shadow ui-corner-all" rel="external">' . $this->dict['BACK'] . '</a>';
+		echo '</div>';
+		echo '</center>';
+		// FOOTER
+		include 'footer_div.phtml';
+	echo '</div>';
+?>
+<?php include 'footer.phtml';?>

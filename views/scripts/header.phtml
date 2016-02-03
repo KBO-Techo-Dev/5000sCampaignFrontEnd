@@ -1,0 +1,64 @@
+<!DOCTYPE html> 
+<head>
+	<?php echo $this->metadata; ?>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<?php include 'styles.phtml'; ?>
+	<title><?php echo $this->title; ?></title>
+	
+	<?php
+		if( $this->page == 'campaign' )
+		{
+			echo '<link rel="stylesheet" href="' . $this->self_root . 'views/scripts/css/codyhouse/reset.css" />';
+			echo '<link rel="stylesheet" href="' . $this->self_root . '/views/scripts/css/codyhouse/style.css" />';
+		}
+	?>
+	<link rel="stylesheet" href="<?php echo $this->self_root; ?>views/scripts/css/flat-ui/jquery.mobile.flatui.css" />
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+	<script src="<?php echo $this->self_root; ?>views/scripts/modernizr.js"></script>
+	<script src="<?php echo $this->self_root; ?>views/scripts/jquery-1.11.2.min.js"></script>
+	<script src="<?php echo $this->self_root; ?>views/scripts/jssor.js"></script>
+	<script src="<?php echo $this->self_root; ?>views/scripts/jssor.slider.min.js"></script>
+	<script src="<?php echo $this->self_root; ?>views/scripts/jqmeter.min.js"></script>
+	<script src="<?php echo $this->self_root; ?>views/scripts/jquery.mobile-1.4.5.min.js"></script>
+	<script src="<?php echo $this->self_root; ?>views/scripts/main.js"></script>
+	<script>
+		$( document ).on( "pagecreate", function() {
+			$( ".photopopup" ).on({
+				popupbeforeposition: function() {
+					var maxHeight = $( window ).height() - 60 + "px";
+					$( ".photopopup img" ).css( "max-height", maxHeight );
+				}
+			});
+			$( "#expand" ).click(function() {
+				$("#set").children(":last").collapsible( "expand" );
+			});
+		});
+		$(document).ready(function(){
+			$('#jqmeter-container').jQMeter();
+		});
+		$(function(){
+			$('.fadein img:gt(0)').hide();
+			setInterval(function(){$('.fadein :first-child').fadeOut().next('img').fadeIn().end().appendTo('.fadein');}, 3000);
+		});
+		function fblogin(id)
+		{
+			var form = document.getElementById(id);
+			form.action += "#register";
+			form.submit();
+		}
+	</script>
+<?php
+/* Temporary removed by Puttipong Nakapat 2015-09-16
+	if(isset($_SESSION['screen_width']) AND isset($_SESSION['screen_height'])){
+		//echo 'User resolution: ' . $_SESSION['screen_width'] . 'x' . $_SESSION['screen_height'];
+	} else if(isset($_REQUEST['width']) AND isset($_REQUEST['height'])) {
+		$_SESSION['screen_width'] = $_REQUEST['width'];
+		$_SESSION['screen_height'] = $_REQUEST['height'];
+		header('Location: ' . $_SERVER['PHP_SELF']);
+	} else {
+		echo '<script type="text/javascript">window.location = "' . $_SERVER['PHP_SELF'] . '?width="+screen.width+"&height="+screen.height;</script>';
+	}
+*/
+?>
+</head>
+<body>

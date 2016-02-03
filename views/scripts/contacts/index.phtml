@@ -1,0 +1,50 @@
+<?php include 'header.phtml';?>
+<?php
+	// PAGE I [HOME] ---------------------------------------------------------------------------------------------------
+	echo '<div data-role="page" id="contacts-index">';
+		// HEADER
+		include 'header_div.phtml';
+		// CONTENT
+		echo '<center>';
+		echo '<div role="main" class="ui-content" style="max-width:800px">';
+		if( !$this->mobile_view )
+			echo '<img src="' . $this->image_root . $this->language . '/title-short.png" width="75%" style="max-width:600px; padding:80px 0px 80px 0px;"/>';
+
+			echo '<div class="ui-body ui-corner-all" style="background-color:white">';
+			echo '<h1>' . $this->dict['CONTACTS'] . '</h1>';
+				echo '<p>' . $this->dict['RUN_BY_KBO'] . '</p>';
+				echo '<div style="text-align:left">';
+					echo '<p>';
+						echo '<img src="' . $this->image_root . 'icon_location.png"/><br/>';
+						echo $this->dict['CONTACT_ADDRESS'];
+					echo '</p>';
+					echo '<p>';
+						echo '<img src="' . $this->image_root . 'icon_phone.png"/><br/>';					
+						echo $this->dict['CONTACT_PHONE'];
+					echo '</p>';
+					echo '<p>';
+						echo '<img src="' . $this->image_root . 'icon_mail.png"/><br/>';
+						echo $this->dict['CONTACT_EMAIL'];
+					echo '</p>';
+				echo '</div>';
+				echo '<img src="' . $this->image_root . 'map.png" width="100%" style="max-width:451px"/><br/>';
+				if( !$this->mobile_view )
+				{
+					echo '<p style="text-align:left; padding:10px;">';
+						echo '<a href="' . $this->self_root . '" rel="external">' . $this->dict['BACK'] . '</a> &middot; ';
+						if( $this->language == 'en' )
+							echo '<a href="' . $this->self . '?language=th">' . $this->dict['THAI'] . '</a>';
+						else  echo '<a href="' . $this->self . '?language=en">' . $this->dict['ENGLISH'] . '</a>';
+					echo '</p>';
+				}
+				else
+					echo '<br/><p><a href="' . $this->self_root . '" class="ui-btn ui-btn-c ui-corner-all" rel="external">' . $this->dict['BACK'] . '</a></p><br/>';
+			echo '</div>';
+			//echo '<a href="' . $this->self_root . '" class="ui-btn ui-btn-c ui-corner-all">' . $this->dict['BACK'] . '</a>';				
+		echo '</div>';
+		echo '</center>';
+		// FOOTER
+		include 'footer_div.phtml';
+	echo '</div>';
+?>
+<?php include 'footer.phtml';?>

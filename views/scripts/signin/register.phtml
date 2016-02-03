@@ -1,0 +1,68 @@
+<?php include 'header.phtml';
+	$target_id = isset($this->page) ? "#". $this->page : "";
+?>
+<?php
+	$email = isset($this->email)? $this->email : "";
+	$password = isset($this->password)? $this->password : "";
+	$first_name =  isset($this->first_name)? $this->first_name : "";
+	$last_name = isset($this->last_name)? $this->last_name : "";
+	$yearofbirth = isset($this->yearofbirth)? $this->yearofbirth : "";
+
+	// PAGE II [REGISTER] ---------------------------------------------------------------------------------------------------
+	echo '<div data-role="page" id="signin-register">';
+		// HEADER
+		include 'header_div.phtml';
+		// CONTENT
+		echo '<center>';
+		echo '<div role="main" class="ui-content" style="max-width:480px">';
+			echo '<div class="ui-body ui-body-a ui-corner-all">';
+			if(isset($this->error))
+			{
+				echo '<p>' . $this->error . '</p>';
+			}
+			if(isset($this->message))
+			{
+				echo '<p>' . $this->message . '</p>';
+				
+			} else {
+				echo '<h1>' . $this->dict['REGISTER'] . '</h1>';
+				echo '<form style="max-width:350px" id="fblogin_form2" action="'.$this->self.'" method="post">';
+					echo '<input type="hidden" name="command" value="fblogin" />';
+				echo '</form>';
+				echo "<a href='javascript:fblogin(\"fblogin_form2\")'>";
+					echo '<img src="' . $this->image_root . 'fb-login-button.png" alt="fb-login" width="100%" style="max-width:400px"/>';
+				echo '</a>';
+				echo '<br/><font color="#CCCCCC">------------------- ' . $this->dict['OR'] . ' -------------------</font>';
+				echo '<form style="max-width:350px" id="register_form" action="'.$this->self.'" method="post">';
+					echo '<input type="text" name="first_name" id="textinput-1" placeholder="' . $this->dict['NAME'] . '*" value="'.$first_name.'" pattern=".{1,}" required>';
+					echo '<input type="text" name="last_name" id="textinput-2" placeholder="' . $this->dict['LAST_NAME'] . '*" value="'.$last_name.'" pattern=".{1,}" required>';
+					echo '<input type="email" name="email" id="textinput-3" placeholder="' . $this->dict['EMAIL'] . '*" value="'.$email.'" required>';
+					echo '<input type="password" name="password" id="textinput-4" placeholder="' . $this->dict['PASSWORD'] . ' ' . $this->dict['PASSWORD_REQUIREMENT'] . '" value="'.$password.'" pattern=".{4,12}" required>';
+					echo '<input type="text" name="yearofbirth" id="textinput-5" placeholder="' . $this->dict['YEAR_OF_BIRTH_PLACEHOLDER'] . '" value="'.$yearofbirth.'" pattern=".{4,4}" required>';
+					if( isset($this->all_countries[0]) )
+					{
+						echo '<div class="ui-field-contain">';
+							echo '<div style="text-align:left;">' . $this->dict['NATIONALITY'] . ':</div>';
+							echo '<select name="select-native-nationality" id="select-native-nationality">';
+								foreach( $this->all_countries as $i => $c )
+								{
+									echo '<option value="' . $c['name'] . '"' . ($c['alpha2Code'] == strtoupper($this->language) ? ' selected' : '') . '>' . $c['name'] . '</option>';
+								}
+							echo '</select>';
+						echo '</div>';
+					}
+					echo '<input type="hidden" name="command" value="register" />';
+					echo '<p><input type="submit" value="' . $this->dict['REGISTER'] . '" data-theme="c"></p>';
+				echo '</form>';
+				echo $this->dict['ALREADY_HAVE_ACCOUNT'] . '? <a href="' . $this->self . '/index" data-transition="none">' . $this->dict['SIGN_IN'] . '</a>.';
+				echo '<hr/>';
+				echo '<p><small>' . $this->dict['FB_LOGIN_AGREEMENT'] . '</small></p>';
+			}
+			echo '</div>';
+		echo '</div>';
+		echo '</center>';
+		// FOOTER
+		include 'footer_div.phtml';
+	echo '</div>';
+?>
+<?php include 'footer.phtml';?>

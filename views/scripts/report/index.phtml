@@ -1,0 +1,80 @@
+<?php include 'header.phtml';?>
+<?php
+	// PAGE I [HOME] ---------------------------------------------------------------------------------------------------
+	echo '<div data-role="page" id="report-index">';
+		// HEADER
+		include 'header_div.phtml';
+		// CONTENT
+		echo '<center>';
+		echo '<div role="main" class="ui-content" style="max-width:800px">';
+		if( !$this->mobile_view )
+			echo '<img src="' . $this->image_root . $this->language . '/title-short.png" width="75%" style="max-width:600px; padding:80px 0px 80px 0px;"/>';
+
+			echo '<div class="ui-body ui-corner-all" style="background-color:white">';
+				echo '<h1>' . $this->dict['REPORT_CASE'] . '</h1>';
+				if( false )
+				{
+					echo '<p style="text-align:left"><strong>Case info.</strong><br/>';
+					echo 'Please describe details of reporting case, where does it take place.</p>';
+					echo '<form>';
+						echo '<div class="ui-field-contain">';
+							echo '<textarea cols="40" rows="8" name="textarea-1" id="textarea-1" placeholder="Please describe the case."></textarea>';
+						echo '</div>';
+						echo '<input type="text" name="textinput-4" id="textinput-4" placeholder="City" value="">';
+						echo '<div class="ui-field-contain">';
+							echo '<select name="select-nation-1" id="select-nation-1">';
+								echo '<option value="1">Thailand</option>';
+								echo '<option value="2">England</option>';
+								echo '<option value="4">France</option>';
+								echo '<option value="3">Germany</option>';
+								echo '<option value="5">Japan</option>';
+								echo '<option value="6">Taiwan</option>';
+								echo '<option value="7">USA</option>';
+							echo '</select>';
+						echo '</div>';
+						echo '<p style="text-align:left"><strong>Upload pictures</strong><br/>';
+						echo 'Please take at least one photo of the case.</p>';				
+						echo '<input type="file" name="file-1" id="file-1" value="">';
+						echo '<input type="file" name="file-2" id="file-2" value="">';
+						echo '<input type="file" name="file-3" id="file-3" value="">';
+						echo '<input type="file" name="file-4" id="file-4" value="">';
+					echo '</form>';
+					echo '<p style="text-align:left"><strong>Reporter info.</strong><br/>';
+					echo 'Please provide your information.</p>';
+					echo '<img src="' . $this->image_root . 'fb-login-button.png" alt="fb-login" width="100%" style="max-width:400px"/>';
+					echo '<br/><font color="#CCCCCC">--------------------- or ---------------------</font>';
+					echo '<form>';
+						echo '<input type="text" name="textinput-1" id="textinput-1" placeholder="Name" value="">';
+						echo '<input type="text" name="textinput-2" id="textinput-2" placeholder="Lastname" value="">';
+						echo '<input type="text" name="textinput-3" id="textinput-3" placeholder="Email" value="">';
+						echo '<input type="text" name="textinput-4" id="textinput-4" placeholder="Password" value="">';
+					echo '</form>';
+					echo '<p><a href="#popupDialog" data-rel="popup" data-position-to="window" data-transition="pop" class="ui-btn ui-btn-d ui-corner-all">SUBMIT REPORT</a></p>';
+				}
+				else
+				{
+					echo $this->dict['REPORT_CASE_UNDER_CONSTRUCTION'];
+				}
+				echo '<p><a href="' . $this->self_root . '" class="ui-btn ui-corner-all" rel="external">' . $this->dict['BACK'] . '</a></p>';
+			echo '</div>';
+		echo '</div>';
+		echo '</center>';
+		// THANK YOU
+		echo '<div data-role="popup" id="popupDialog" data-overlay-theme="a" data-theme="a" data-dismissible="false" style="max-width:400px;">';
+			echo '<div data-role="header" data-theme="c">';
+				echo '<h1>Message</h1>';
+			echo '</div>';
+			echo '<div role="main" class="ui-content">';
+				echo '<br/>';
+				echo '<p><b>Thank you for your report.</b></p>';
+				echo '<p>Your report will be investigated and processed and keep acknowledging you through your email inbox.</p>';
+				echo '<br/>';
+				echo '<a href="' . $this->self_root . '" class="ui-btn ui-btn-c ui-corner-all" data-rel="flow">Done</a>';
+			echo '</div>';
+		echo '</div>';
+		echo '</center>';
+		// FOOTER
+		include 'footer_div.phtml';
+	echo '</div>';
+?>
+<?php include 'footer.phtml';?>

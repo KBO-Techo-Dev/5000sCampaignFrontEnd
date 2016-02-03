@@ -1,0 +1,209 @@
+<?php include 'header.phtml';?>
+<?php
+	$campaign = array();
+	foreach( $this->campaign as $data )
+	{
+		if( $data['campaign_id'] == $this->id )
+		{
+			$campaign = $data;
+			break;
+		}
+	}
+	$email = isset($this->email)? $this->email : "";
+	$password = isset($this->password)? $this->password : "";
+	$first_name =  isset($this->first_name)? $this->first_name : "";
+	$last_name = isset($this->last_name)? $this->last_name : "";
+	$yearofbirth = isset($this->yearofbirth)? $this->yearofbirth : "";
+
+	$countries = 7;
+	// PAGE I [HOME] ---------------------------------------------------------------------------------------------------
+	echo '<div data-role="page" id="signature-index">';
+		// HEADER
+		include 'header_div.phtml';
+		// CONTENT
+		echo '<center>';
+		echo '<div role="main" class="ui-content" style="max-width:800px">';
+		if( !$this->mobile_view )
+			echo '<img src="' . $this->image_root . $this->language . '/title-short.png" width="75%" style="max-width:600px; padding:80px 0px 80px 0px;"/>';
+
+			echo '<div class="ui-body ui-body-a ui-corner-all">';
+				if( $this->debug ) print_r( $this->debug );
+				// ------ THANK YOU -------
+				if( $this->thankyou )
+				{
+					if( $this->error )
+					{
+						echo '<h1>' . $this->dict['ERROR_SUPPORT.HEAD'] . '</h1>';
+						echo '<p>' . $this->error . '</p>';
+					}
+					else
+					{
+						echo '<h1>' . $this->dict['SIGN'] . '</h1>';
+						echo '<h2>' . $this->dict['THANKS_FOR_SUPPORT.HEAD'] . '</h2>';
+						echo '<hr/>';
+						echo '<p style="text-align:left">';
+						echo Utils::resolveTag( $this->dict['THANKS_FOR_SUPPORT.DETAIL'], array(
+							'[NAME]' 	=> $_SESSION['me']['first_name'] . ' ' . $_SESSION['me']['last_name'],
+							'[COUNTRY]' => $countries,
+							'[IMAGE]'	=> '<img src="' . $this->image_root . 'lotus-64.png">',
+						));
+						echo '</p>';
+						// OTHER_CAMPAIGN
+						foreach( $this->campaign as $i => $data )
+						{
+							if( $data['campaign_id'] != $this->id
+								&& !$data['already_support'] )
+							{
+								echo '<hr/>';
+								echo '<h3>' . $this->dict['OTHER_CAMPAIGN'] . '</h3>';
+								echo '<div class="ui-bar ui-bar-a">' . $data['title'] . '</div>';
+								echo '<br/><a href="' . $this->self . '/index/id/' . $data['campaign_id'] . '" rel="external"><img src="' . $data['image'] . '" style="max-width:' . ($this->mobile_view ? 240 : 400) . 'px;"></a>';
+								echo '<p style="text-align:left;">' . $data['brief'] . '</p>';
+								if( $this->mobile_view )
+								{
+									echo '<p><a href="' . $this->self . '/index/id/' . $data['campaign_id'] . '" class="ui-btn ui-btn-d ui-corner-all ui-icon-carat-r ui-btn-icon-right" rel="external"><big><big>' . $this->dict['SIGN'] . '</big></big></a></p>';
+								}
+								else
+								{
+									echo '<div class="ui-grid-a">';
+										echo '<div class="ui-block-a"></div>';
+										echo '<div class="ui-block-b"><a href="' . $this->self . '/index/id/' . $data['campaign_id'] . '" class="ui-btn ui-btn-d ui-corner-all ui-icon-carat-r ui-btn-icon-right"><big><big>' . $this->dict['SIGN'] . '</big></big></a></div>';
+									echo '</div>';								
+								}									
+								break;
+							}
+						}
+					}
+					echo '<a href="' . $this->self_root . '" class="ui-btn ui-btn-a ui-corner-all" rel="external">' . $this->dict['BACK'] . '</a>';
+				}
+				else
+				{
+					echo '<h1>' . $this->dict['SIGN'] . '</h1>';
+					// ------ HEAD & DETAIL -------
+					echo '<div class="ui-bar ui-bar-a">';
+						echo '<h2><big>' . $campaign['copied_head'] . '</big></h2>';
+					echo '</div>';
+					echo '<p style="text-align:left">' . $campaign['copied_full'] . '</p>';
+					echo '<div class="ui-grid-a">';
+						echo '<div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:64px"><big><big><big><big><font color="red">' . $campaign['signatures'] . '</font></big></big></big></big><br/><small>' . $this->dict['SIGNATURES'] . '</small></div></div>';
+						echo '<div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:64px""><big><big><big><big>' . $campaign['target'] . '</big></big></big></big><br/><small>' . $this->dict['TARGET'] . '</small></div></div>';
+					echo '</div>';
+					// ------ REGISTER -------
+					if( !isset($_SESSION['me']) )
+					{
+						echo '<form style="max-width:350px" id="signature-fblogin_form1" action="'.$this->self.'" method="post">';
+							echo '<input type="hidden" name="command" value="fblogin" />';
+						echo '</form>';
+						echo "<a href='javascript:fblogin(\"signature-fblogin_form1\")'>";
+							echo '<img src="' . $this->image_root . 'fb-login-button.png" alt="fb-login" width="100%" style="max-width:400px"/>';
+						echo '</a>';
+						echo '<br/>-' . $this->dict['OR'] . '-';					
+					}
+					if( $this->error )
+						echo '<p><font color="red">' . $this->error . '</font></p>';
+					echo '<form id="form-signature-index" action="' . $this->self . '/index/id/' . $campaign['campaign_id'] . '" method="post">';
+					if( !isset($_SESSION['me']) )
+					{
+						echo '<input type="text" name="first_name" id="textinput-1" placeholder="' . $this->dict['NAME'] . '*" value="'.$first_name.'" pattern=".{1,}" required>';
+						echo '<input type="text" name="last_name" id="textinput-2" placeholder="' . $this->dict['LAST_NAME'] . '*" value="'.$last_name.'" pattern=".{1,}" required>';
+						echo '<input type="email" name="email" id="textinput-3" placeholder="' . $this->dict['EMAIL'] . '*" value="'.$email.'" required>';
+						echo '<input type="password" name="password" id="textinput-4" placeholder="' . $this->dict['PASSWORD'] . ' ' . $this->dict['PASSWORD_REQUIREMENT'] . '" value="'.$password.'" pattern=".{4,12}" required>';
+						echo '<input type="text" name="yearofbirth" id="textinput-5" placeholder="' . $this->dict['YEAR_OF_BIRTH_PLACEHOLDER'] . '" value="'.$yearofbirth.'" pattern=".{4,4}" required>';
+						if( isset($this->all_countries[0]) )
+						{
+							echo '<div class="ui-field-contain">';
+								echo '<div style="text-align:left;">' . $this->dict['NATIONALITY'] . ':</div>';
+								echo '<select name="select-native-nationality" id="select-native-nationality">';
+									foreach( $this->all_countries as $i => $c )
+									{
+										echo '<option value="' . $c['name'] . '"' . ($c['alpha2Code'] == strtoupper($this->language) ? ' selected' : '') . '>' . $c['name'] . '</option>';
+									}
+								echo '</select>';
+							echo '</div>';
+						}
+						echo '<p>';
+							echo $this->dict['ALREADY_HAVE_ACCOUNT'] . '? <a href="' . $this->self_root . 'signin" rel="external">' . $this->dict['SIGN_IN'] . '</a>.';
+						echo '</p>';
+					}
+					else
+					{
+						echo '<p>';
+						// ------ ALREADY_SUPPORT -------
+						if( $campaign['already_support'] ) {
+							echo '<img src="' . $this->image_root . 'tick.png" width="100"><br/>';
+							echo Utils::resolveTag($this->dict['ALREADY_SUPPORT'], array(
+								'[NAME]' => $_SESSION['me']['first_name'] . ' ' . $_SESSION['me']['last_name']
+							));							
+						// ------ ENCOURAGE -------
+						} else {
+							echo Utils::resolveTag($this->dict['SIGNATURES_ENCOURAGEMENT'], array(
+								'[NAME]' => $_SESSION['me']['first_name'] . ' ' . $_SESSION['me']['last_name']
+							));
+						}
+						echo '</p>';
+					}
+					if( $campaign['already_support'] )
+					{
+						echo '</form>';
+						// OTHER_CAMPAIGN
+						foreach( $this->campaign as $i => $data )
+						{
+							if( $data['campaign_id'] != $this->id
+								&& !$data['already_support'] )
+							{
+								echo '<hr/>';
+								echo '<h3>' . $this->dict['OTHER_CAMPAIGN'] . '</h3>';
+								echo '<div class="ui-bar ui-bar-a">' . $data['title'] . '</div>';
+								echo '<br/><a href="' . $this->self . '/index/id/' . $data['campaign_id'] . '" rel="external"><img src="' . $data['image'] . '" style="max-width:' . ($this->mobile_view ? 240 : 400) . 'px;"></a>';
+								echo '<p style="text-align:left;">' . $data['brief'] . '</p>';
+								if( $this->mobile_view )
+								{
+									echo '<p><a href="' . $this->self . '/index/id/' . $data['campaign_id'] . '" class="ui-btn ui-btn-d ui-corner-all ui-icon-carat-r ui-btn-icon-right"><big><big>' . $this->dict['SIGN'] . '</big></big></a></p>';
+								}
+								else
+								{
+									echo '<div class="ui-grid-a">';
+										echo '<div class="ui-block-a"></div>';
+										echo '<div class="ui-block-b"><a href="' . $this->self . '/index/id/' . $data['campaign_id'] . '" class="ui-btn ui-btn-d ui-corner-all ui-icon-carat-r ui-btn-icon-right" rel="external"><big><big>' . $this->dict['SIGN'] . '</big></big></a></div>';
+									echo '</div>';								
+								}								
+								break;
+							}
+						}
+						echo '<p><a href="' . $this->self_root . '" class="ui-btn ui-btn-a ui-corner-all" rel="external">' . $this->dict['BACK'] . '</a></p>';
+					}
+					else
+					{
+						// FB Share
+						echo '<div class="ui-field-contain">';
+							echo '<textarea cols="40" rows="8" name="textarea-comment" id="textarea-comment" placeholder="' . $this->dict['COMMENT_PLACEHOLDER'] . '"></textarea>';
+							if( isset($_SESSION['me']['fb_token']) && $_SESSION['me']['fb_token'] )
+							{
+								echo '<fieldset data-role="controlgroup" data-mini="true">';
+									echo '<label for="checkbox-fbshare">' . $this->dict['SHARE_THIS_ON_FACEBOOK'] . '</label>';
+									echo '<input type="checkbox" name="checkbox-fbshare" id="checkbox-fbshare">';
+								echo '</fieldset>';						
+							}
+							if( !isset($_SESSION['me']) )
+								echo '<input type="hidden" name="command" value="register" />';
+							else echo '<input type="hidden" name="command" value="support" />';
+							
+							echo '<p><input type="submit" value="<big><big>' . $this->dict['SIGN_TO_SUPPORT'] . '</big></big>" data-theme="d"></p>';
+							echo '<fieldset data-role="controlgroup" data-mini="true">';
+								echo '<label for="checkbox-showname">' . $this->dict['SHOW_MY_NAME'] . '</label>';
+								echo '<input type="checkbox" name="checkbox-showname" id="checkbox-showname" checked="checked">';
+							echo '</fieldset>';
+						echo '</div>';
+						echo '</form>';
+						if( isset($_SESSION['me']['fb_token']) && $_SESSION['me']['fb_token'] )
+							echo '<p style="text-align:left"><small>' . $this->dict['FB_LOGIN_AGREEMENT'] . '</small></p>';
+					}
+				}
+			echo '</div>';
+		echo '</div>';
+		echo '</center>';
+		// FOOTER
+		include 'footer_div.phtml';
+	echo '</div>';
+?>
+<?php include 'footer.phtml';?>

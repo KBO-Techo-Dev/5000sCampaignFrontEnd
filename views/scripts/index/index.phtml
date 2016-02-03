@@ -1,0 +1,182 @@
+<?php include 'header.phtml';?>
+<?php
+	$show_slideshow = false;
+	$show_hilight_news = true;
+	$show_hilight_campaign = false;
+	$show_other_campaign = true;
+
+	// PAGE I [HOME] ---------------------------------------------------------------------------------------------------
+	echo '<div data-role="page" id="index-index">';
+		// HEADER
+		include 'header_div.phtml';
+		// CONTENT
+		echo '<center>';
+		echo '<div style="background:url(' . $this->image_root . 'title_bg.png)">';
+			if( $this->mobile_view )
+				echo '<img src="' . $this->image_root . 'title-mobile.png" width="100%" style="max-width:840px"/>';
+			else echo '<img src="' . $this->image_root . 'title.png" width="100%" style="max-width:1350px"/>';
+		echo '</div>';
+		echo '<div role="main" class="ui-content" style="max-width:800px">';
+			echo '<div class="rwd-half">';
+				echo '<div class="ui-block-a">';
+					echo '<div class="ui-body" style="text-align:center">';
+						echo '<p style="text-align:left">' . $this->dict['INTRODUCTION'] . '</p>';
+						echo '<p>';
+						echo '<a href="' . $this->self_root . 'report" class="ui-btn ui-shadow ui-corner-all ui-btn-d">' . $this->dict['REPORT_CASE'] . '</a>';
+						echo '</p>';
+					echo '</div>';
+				echo '</div>';
+				echo '<div class="ui-block-b">';
+					echo '<div class="ui-body" style="text-align:center">';
+						echo '<br/>';
+						echo '<a href="https://www.youtube.com/watch?v=Rk5VRdguZkg">';
+						echo '<img src="' . $this->image_root . 'ss-trailer.png" width="100%" style="max-width:360px"/>';
+						echo '</a>';
+					echo '</div>';
+				echo '</div>';
+			echo '</div>';
+		echo '</div>';
+		echo '<div role="main" class="ui-content" style="max-width:800px">';
+			echo '<img src="' . $this->image_root . $this->language . '/prediction.png" width="100%" style="max-width:800px"/>';
+		echo '</div>';
+		// SLIDE SHOW ---------------------------------------------------------------------------------------------
+		if ($show_slideshow)
+		{
+			//echo '<div style="background:url(' . $this->image_root . 'lotus-64.png);">';
+				//echo '<div style="background-color:#e4e4e4; height:25px"></div>';
+				echo '<div style="padding:25px 0px 25px; 0px;">';
+					include 'jssor.slider.home.jquery.phtml';
+				echo '</div>';
+				//echo '<div style="background-color:#e4e4e4; height:25px"></div>';
+			//echo '</div>';
+		
+		}
+		echo '<div role="main" class="ui-content" style="max-width:400px">';
+			echo $this->dict['PLEASE_SIGN_UP'];
+			echo '<a href="' . $this->self_root . 'signin" class="ui-btn ui-shadow ui-corner-all ui-btn-d"><big>' . $this->dict['BE_A_MEMBER'] . '</big></a>';
+		echo '</div>';			
+		echo '<div role="main" class="ui-content" style="max-width:800px">';
+			// HILIGHT NEWS ---------------------------------------------------------------------------------------------
+			if ($show_hilight_news)
+			{
+				echo '<h1>"BUDDHA IS OUR FATHER"</h1>';
+				echo '<a href="' . $this->self_root . 'news/index/id/' . $this->news[0]['news_id'] . '" rel="external"><img src="' . $this->image_root . '/news/' . $this->news[0]['news_id'] . '/' . $this->language . '/cover.jpg" width="100%"/></a>';
+				echo '<br/>';
+				echo '<p style="text-align:left; color:#000000;">' . $this->news[0]['brief'];
+				//echo '&nbsp;&nbsp;&nbsp;<a href="' . $this->self_root . 'news/index/id/' . $this->news[0]['news_id'] . '" rel="external">' . $this->dict['READ_MORE'] . '</a></p>';
+				echo '<div class="ui-grid-a">';
+					echo '<div class="ui-block-a"></div>';
+					echo '<div class="ui-block-b"><a href="' . $this->self_root . 'news/index/id/' . $this->news[0]['news_id'] . '" class="ui-btn ui-corner-all ui-btn-d ui-icon-carat-r ui-btn-icon-right" rel="external"><big><big>' . $this->dict['READ_MORE'] . '</big></big></a></div>';
+				echo '</div>';				
+			}			
+			// CAMPAIGN ---------------------------------------------------------------------------------------------		
+			if ($show_hilight_campaign)
+			{
+				echo '<h1>' . $this->dict['CAMPAIGN'] . '</h1>';
+				echo '<div class="ui-bar ui-bar-a">';
+					echo '<div style="font-size:1.5em; font-weight:bold;">' . $this->campaign[0]['title'] . '</div>';
+				echo '</div>';
+				echo '<a href="' . $this->self_root . 'campaign/index/id/' . $this->campaign[0]['campaign_id'] . '" rel="external"><img src="' . $this->campaign[0]['image'] . '" width="100%"/></a>';
+				// SIGNATURE | TARGET ---------------------------------------------------------------------------------------------
+				$campaign = $this->campaign[0];
+				$mystr = str_replace('[LEFTOVER]', $campaign['target'] - $campaign['signatures'], $this->dict['HELP_US_REACH_TARGET']);
+				if( $this->mobile_view )
+				{
+					echo '<div class="ui-grid-a">';
+						echo '<div class="ui-block-a"><div class="ui-bar ui-bar-a" style="height:64px;"><big><big><big><big><font color="red">' . $this->campaign[0]['signatures'] . '</font></big></big></big></big><br/>' . $this->dict['SIGNATURES'] . '</div></div>';
+						echo '<div class="ui-block-b"><div class="ui-bar ui-bar-a" style="height:64px;"><big><big><big><big>' . $this->campaign[0]['target'] . '</big></big></big></big><br/>' . $this->dict['TARGET'] . '</div></div>';
+					echo '</div>';
+				}
+				else
+				{
+					echo '<div id="index-jqmeter-container" style="text-align:left;"></div>';
+					
+					echo '<div class="ui-grid-a" style="margin-top:-10px;">';
+						echo '<div class="ui-block-a" style="text-align:left; font-size:0.8em;">' . str_replace('[SIGNATURES]', $campaign['signatures'], $this->dict['CURRENT_SIGNATURER']) . '</div>'; 
+						echo '<div class="ui-block-b" style="text-align:right; font-size:0.8em;"><font color="red">' . str_replace('[TARGET]', $campaign['target'], $mystr) . '</font></div>'; 
+					echo '</div>';
+	?>
+					<script type="text/javascript">
+						$('#index-jqmeter-container').jQMeter({
+							goal: <?php echo "'" . $campaign['target'] . "'"; ?>,
+							raised: <?php echo "'" . $campaign['signatures'] . "'"; ?>,
+							orientation: 'horizontal',
+							width:'100%',
+							height:'24px',
+							barColor: '#c1392b',
+							animationSpeed: '6000',
+							counterSpeed: '6000'
+						});
+					</script>
+	<?php				
+				}
+				echo '<br/>';
+				echo '<p style="text-align:left; color:#000000;">' . $this->campaign[0]['brief'] . '&nbsp;&nbsp;&nbsp;<a href="' . $this->self_root . 'campaign/index/id/' . $this->campaign[0]['campaign_id'] . '" rel="external">' . $this->dict['READ_MORE'] . '</a></p>';
+				echo '<div class="ui-grid-a">';
+					echo '<div class="ui-block-a"></div>';
+					echo '<div class="ui-block-b"><a href="' . $this->self_root . 'signature/index/id/' . $this->campaign[0]['campaign_id'] . '" class="ui-btn ui-corner-all ui-btn-d ui-icon-carat-r ui-btn-icon-right" rel="external"><big><big>' . $this->dict['SIGN_TO_SUPPORT'] . '</big></big></a></div>';
+				echo '</div>';
+			}
+			
+			// OTHERS CAMPAIGN ---------------------------------------------------------------------------------------------
+			if ($show_other_campaign)
+			{				
+				echo '<br/>';
+				echo '<hr/>';			
+				echo '<br/>';
+				echo '<br/>';
+				echo '<h1>' . $this->dict['OTHER_CAMPAIGN'] . '</h1>';
+				$counter = 0;
+				foreach( $this->campaign as $i => $data )
+				{
+					if( $i == 0 )
+						continue;
+					//if( $this->mobile_view )
+						echo '<p></p>';
+					
+					if( !$this->mobile_view ) echo '<div class="ui-grid-a">';
+						//echo '<div class="ui-bar ui-bar-a"><h3>' . $data['title'] . '</h3></div>';
+						if( !$this->mobile_view ) echo '<div class="ui-block-a">';
+							echo '<a href="' . $this->self_root . 'campaign/index/id/' . $this->campaign[$i]['campaign_id'] . '" rel="external">';
+								echo '<img src="' . $data['image'] . '" width="100%" style="max-height:260px;">';
+							echo '</a>';
+						if( !$this->mobile_view ) echo '</div>';
+						if( !$this->mobile_view )
+						{
+							echo '<div class="ui-block-b">';
+								echo '<div class="ui-body ui-body-a" style="text-align:left; background-color:#e4e4e4;">';
+									echo '<h3>' . $data['title'] . '</h3>';
+									echo '<p>' . $data['brief'] . '</p>';
+									echo '<div class="ui-grid-a">';
+										//echo '<div class="ui-block-a" style="border-left:10px solid #2C3E50;"><div style="padding:5px 0px 5px 20px; background-color:#eeeeee;"><big><big><font color="red">' . $data['signatures'] . '</font></big></big><br/>' . $this->dict['SIGNATURES'] . '</div></div>';
+										//echo '<div class="ui-block-b" style="border-left:10px solid #2C3E50;"><div style="padding:5px 0px 5px 20px; background-color:#eeeeee;"><big><big><font color="red">' . $data['target'] . '</font></big></big><br/>' . $this->dict['TARGET'] . '</div></div>';
+										echo '<div class="ui-block-a"><br/><a href="' . $this->self_root . 'campaign/index/id/' . $this->campaign[$i]['campaign_id'] . '" rel="external">' . $this->dict['READ_MORE'] . '</a></div>';
+										echo '<div class="ui-block-b">';
+											echo '<a href="' . $this->self_root . 'signature/index/id/' . $this->campaign[$i]['campaign_id'] . '" class="ui-btn ui-btn-d ui-corner-all ui-icon-carat-r ui-btn-icon-right"><big><big>' . $this->dict['SIGN'] . '</big></big></a>';
+										echo '</div>';
+									echo '</div>';
+								echo '</div>';
+							echo '</div>';						
+						}
+					if( !$this->mobile_view ) echo '</div>';
+					if( ++$counter > 2 )
+						break;
+				}
+				if( $this->mobile_view )
+				{
+					echo '<hr/>';
+					echo '<ul data-role="listview" data-inset="true">';
+						echo '<li><a href="' . $this->self_root . 'why">' . $this->dict['WHY_PROTECT'] . '</a></li>';
+						echo '<li><a href="' . $this->self_root . 'news">' . $this->dict['NEWS'] . '</a></li>';
+						echo '<li><a href="' . $this->self_root . 'articles">' . $this->dict['ARTICLES'] . '</a></li>';
+						echo '<li><a href="' . $this->self_root . 'contacts">' . $this->dict['CONTACTS'] . '</a></li>';
+					echo '</ul>';				
+				}
+			}
+		echo '</div>';
+		echo '</center>';
+		// FOOTER
+		include 'footer_div.phtml';
+	echo '</div>';
+?>
+<?php include 'footer.phtml';?>

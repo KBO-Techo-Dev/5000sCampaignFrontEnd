@@ -1,0 +1,83 @@
+<?php include 'header.phtml';?>
+<script type="text/javascript">
+	google.load("visualization", "1", {packages:["corechart"]});
+	google.setOnLoadCallback(drawChart);
+	function drawChart() {
+		var data = google.visualization.arrayToDataTable([
+		<?php
+			echo "['" . ($this->mode == 1 ? 'Nationality' : 'Age') . "', 'Numbers'],";
+			if( isset($this->stat[0]) )
+			{
+				foreach($this->stat as $c)
+				{
+					echo "['" . $c['caption'] . "', " . $c['nums'] . "],";
+				}
+			}
+		/*
+		  ['Work',     11],
+		  ['Eat',      2],
+		  ['Commute',  2],
+		  ['Watch TV', 2],
+		  ['Sleep',    7]
+		*/
+		?>
+		]);
+
+		var options = {
+		  title: 'Total users: ' + <? echo $this->total; ?>
+		};
+
+		var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+		chart.draw(data, options);
+	}
+</script>
+<?php
+	// PAGE I [HOME] ---------------------------------------------------------------------------------------------------
+	echo '<div data-role="page" id="stat-index">';
+		// HEADER
+		include 'header_div.phtml';
+		// CONTENT
+		echo '<center>';
+		echo '<div role="main" class="ui-content" style="max-width:800px">';
+		if( !$this->mobile_view )
+			echo '<img src="' . $this->image_root . $this->language . '/title-short.png" width="75%" style="max-width:600px; padding:80px 0px 80px 0px;"/>';
+			echo '<h1>STATISTICS</h1>';
+			echo '<div class="ui-grid-a">';
+				echo '<div class="ui-block-a"><div class="ui-bar ui-bar-a" style="width:90%"><h2>Registered by Nationality</h2></div></div>';
+				echo '<div class="ui-block-b"><div class="ui-bar ui-bar-a" style="width:90%"><h2>Registered by Age</h2></div></div>';
+				echo '<div class="ui-block-a">';
+					echo '<p>on <a href="' . $this->self . '/index/?mode=1&date=2015-05-27" rel="external">27 May, 2015</a></p>';
+					echo '<p>on <a href="' . $this->self . '/index/?mode=1&date=2015-05-28" rel="external">28 May, 2015</a></p>';
+					echo '<p>on <a href="' . $this->self . '/index/?mode=1&date=2015-05-29" rel="external">29 May, 2015</a></p>';
+					echo '<p>on <a href="' . $this->self . '/index/?mode=1&date=2015-05-30" rel="external">30 May, 2015</a></p>';
+					echo '<p>on <a href="' . $this->self . '/index/?mode=1&date=2015-05-31" rel="external">31 May, 2015</a></p>';
+					echo '<p>on <a href="' . $this->self . '/index/?mode=1&date=2015-06-01" rel="external">01 June, 2015</a></p>';
+				echo '</div>';
+				echo '<div class="ui-block-b">';
+					echo '<p>on <a href="' . $this->self . '/index/?mode=2&date=2015-05-27" rel="external">27 May, 2015</a></p>';
+					echo '<p>on <a href="' . $this->self . '/index/?mode=2&date=2015-05-28" rel="external">28 May, 2015</a></p>';
+					echo '<p>on <a href="' . $this->self . '/index/?mode=2&date=2015-05-29" rel="external">29 May, 2015</a></p>';
+					echo '<p>on <a href="' . $this->self . '/index/?mode=2&date=2015-05-30" rel="external">30 May, 2015</a></p>';
+					echo '<p>on <a href="' . $this->self . '/index/?mode=2&date=2015-05-31" rel="external">31 May, 2015</a></p>';
+					echo '<p>on <a href="' . $this->self . '/index/?mode=2&date=2015-06-01" rel="external">01 June, 2015</a></p>';
+				echo '</div>';
+			echo '</div>';
+			echo '<br/>';
+			echo '<hr/>';
+			echo '<br/>';
+			echo '<div class="ui-bar ui-bar-c">';
+				echo '<p style="font-size:1.5em; font-weight:bold;">Registered by <font color="#FF8800">' . ($this->mode == 1 ? 'NATIONALITY' : 'AGE') . '</font> on <font color="#00FFFF">' . date('d M Y', strtotime($this->picked_date)) . '</font></p>';
+			echo '</div>';
+			if( isset($this->stat[0]) )
+				echo '<div id="piechart" style="width: 800px; height: 500px;"></div>';
+			else
+				echo '<h1><font color="#CCCCCC">DATA NOT FOUND</font></h1>';
+			echo '<p><a href="' . $this->self_root . '" class="ui-btn ui-btn-c ui-corner-all" rel="external">' . $this->dict['BACK'] . '</a></p>';
+		echo '</div>';
+		echo '</center>';
+		// FOOTER
+		include 'footer_div.phtml';
+	echo '</div>';
+?>
+<?php include 'footer.phtml';?>

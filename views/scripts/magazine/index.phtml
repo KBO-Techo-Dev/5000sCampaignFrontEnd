@@ -1,0 +1,21 @@
+<?php include 'header.phtml';?>
+<?php
+	// [MAGAZINE] ---------------------------------------------------------------------------------------------------
+	echo '<div data-role="page" id="news-index">';
+		// HEADER
+		include 'header_div.phtml';
+		// CONTENT
+		echo '<center>';
+		echo '<h1>MAGAZINE</h1>';
+		echo '<div role="main" class="ui-content" style="max-width:800px;">';
+			echo '<img src="' . $this->image_root . 'magazine_1.jpg" style="max-width:800px;"/>';
+			echo '<div style="text-align:left;">';
+				echo $this->dict['MAGAZINE_INTRO'];
+			echo '</div>';
+		echo '</div>';
+		echo '</center>';
+		// FOOTER
+		include 'footer_div.phtml';
+	echo '</div>';
+?>
+<?php include 'footer.phtml';?>

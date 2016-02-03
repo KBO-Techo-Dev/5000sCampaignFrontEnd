@@ -1,0 +1,62 @@
+<?php
+// HEADER
+echo '<div data-role="header" id="my-header" style="max-height:46px;">';
+	echo '<img src="' . $this->image_root . 'title-mini.png" style="padding:8px 0px 0px 8px;">';
+	//if( isset($_SESSION['me' . $this->config->codename]) )
+	if( isset($_SESSION['me']) )
+	{
+		//echo '<h1>Welcome, ' . $_SESSION['me' . $this->config->codename]['name'] . '!</h1>';
+		//echo ' <a href="' . $this->self_root . '?signout=1">Sign out</a>';
+		echo '<h6></h6>';
+		if( !$this->mobile_view )
+		{
+			echo '<div data-role="controlgroup" data-type="horizontal" class="ui-btn-right">';
+				echo '<a href="' . $this->self . '?language=en" class="ui-btn" rel="external"><img src="' . $this->image_root . 'en.png">&nbsp;</a>';
+				echo '<a href="' . $this->self . '?language=th" class="ui-btn" rel="external"><img src="' . $this->image_root . 'th.png">&nbsp;</a>';
+				echo '<a href="' . $this->self_root . 'why" class="ui-btn"><img src="' . $this->image_root . $this->language . '/menu-why.png">&nbsp;</a>';
+				echo '<a href="' . $this->self_root . 'news" class="ui-btn"><img src="' . $this->image_root . $this->language . '/menu-news.png">&nbsp;</a>';
+				echo '<a href="' . $this->self_root . 'articles" class="ui-btn"><img src="' . $this->image_root . $this->language . '/menu-articles.png"></a>';
+				echo '<a href="' . $this->self_root . 'contacts" class="ui-btn"><img src="' . $this->image_root . $this->language . '/menu-contacts.png"></a>';
+				echo '<a href="#panelMenu" class="ui-btn ui-btn-c ui-corner-all ui-btn-icon-right ui-icon-carat-d">' . $_SESSION['me']['first_name'] . ' ' . $_SESSION['me']['last_name'] . '</a>';
+			echo '</div>';
+		}
+		else
+		{
+			echo '<a href="#panelMenu" class="ui-btn ui-btn-c ui-btn-right ui-btn-inline ui-corner-all ui-btn-icon-right ui-icon-carat-d">' . $_SESSION['me']['first_name'] . ' ' . $_SESSION['me']['last_name'] . '</a>';		
+		}
+		echo '<div data-role="panel" id="panelMenu" data-theme="a" data-position="right" data-display="overlay">';
+			echo '<ul data-role="listview">';
+				//echo '<li><a href="' . $this->self_root . 'settings">' . $this->dict['MY_CAMPAIGN'] . '</a></li>';
+				//echo '<li><a href="' . $this->self_root . 'settings">' . $this->dict['PROFILE'] . '</a></li>';
+				echo '<li><a href="' . $this->self_root . 'settings">' . $this->dict['SETTINGS'] . '</a></li>';
+				echo '<li><a href="' . $this->self_root . '?logout=1" rel="external">' . $this->dict['LOG_OUT'] . '</a></li>';
+				echo '<li data-icon="delete" data-theme="c"><a href="#my-header" data-rel="close">' . $this->dict['CLOSE'] . '</a></li>';
+			echo '</ul>';
+		echo '</div>';
+	}
+	else
+	{
+		//echo '<h6></h6>';
+		echo '<h6></h6>';
+		if( $this->page != 'signin' ) 
+		{
+			if( !$this->mobile_view )
+			{
+				echo '<div data-role="controlgroup" data-type="horizontal" class="ui-btn-right">';
+					echo '<a href="' . $this->self . '?language=en" class="ui-btn" rel="external"><img src="' . $this->image_root . 'en.png">&nbsp;</a>';
+					echo '<a href="' . $this->self . '?language=th" class="ui-btn" rel="external"><img src="' . $this->image_root . 'th.png">&nbsp;</a>';
+					echo '<a href="' . $this->self_root . 'why" class="ui-btn"><img src="' . $this->image_root . $this->language . '/menu-why.png">&nbsp;</a>';
+					echo '<a href="' . $this->self_root . 'news" class="ui-btn"><img src="' . $this->image_root . $this->language . '/menu-news.png">&nbsp;</a>';
+					echo '<a href="' . $this->self_root . 'articles" class="ui-btn"><img src="' . $this->image_root . $this->language . '/menu-articles.png"></a>';
+					echo '<a href="' . $this->self_root . 'contacts" class="ui-btn"><img src="' . $this->image_root . $this->language . '/menu-contacts.png"></a>';
+					echo '<a href="' . $this->self_root . 'signin" class="ui-btn ui-btn-c ui-btn-icon-right ui-icon-user" rel="external">' . $this->dict['SIGN_IN'] . '</a>';
+				echo '</div>';				
+			}
+			else
+			{
+				echo '<a href="' . $this->self_root . 'signin" class="ui-btn ui-btn-c ui-btn-right ui-btn-inline ui-corner-all ui-btn-icon-right ui-icon-user" rel="external">' . $this->dict['SIGN_IN'] . '</a>';				
+			}			
+		}
+	}
+echo '</div>';
+?>

@@ -1,0 +1,72 @@
+<?php include 'header.phtml';?>
+<?php
+	$max_questions = 14;
+	// PAGE I [HOME] ---------------------------------------------------------------------------------------------------
+	for( $i=1; $i<=$max_questions; $i++ )
+	{
+		echo '<div data-role="page" id="answer' . $i . '">';
+			// HEADER
+			include 'header_div.phtml';
+			// CONTENT
+			echo '<center>';
+			echo '<div role="main" class="ui-content" style="max-width:800px">';
+				if( !$this->mobile_view )
+					echo '<img src="' . $this->image_root . $this->language . '/title-short.png" width="75%" style="max-width:600px; padding:80px 0px 80px 0px;"/>';
+
+				echo '<h1>' . $this->dict['WHY_PROTECT'] . '</h1>';
+				if( $this->mobile_view )
+				{
+					echo '<div data-role="collapsibleset" data-theme="a" data-content-theme="a">';
+					for( $j=1; $j<=$max_questions; $j++ )
+					{
+						echo '<div data-role="collapsible">';
+							echo '<h3>' . $this->dict['WHY_PROTECT_QUESTION_' . $j] . '</h3>';
+							echo '<p>';
+								echo '<h2>' . $this->dict['WHY_PROTECT_QUESTION_' . $j] . '</h2>';
+								echo '<div style="text-align:left">' . $this->dict['WHY_PROTECT_ANSWER_' . $j] . '</div>';
+							echo '</p>';
+						echo '</div>';
+					}
+				}
+				else
+				{
+					echo '<div class="rwd-half">';
+						echo '<div class="ui-block-a">';
+							echo '<div class="ui-body ui-body-a">';
+								echo '<ul data-role="listview">';
+									for( $j=1; $j<=$max_questions; $j++ )
+										echo '<li><a href="#answer' . $j . '" data-transition="none" style="white-space:normal;"><small>' . $this->dict['WHY_PROTECT_QUESTION_' . $j] . '</small></a></li>';							
+								echo '</ul>';
+							echo '</div>';
+						echo '</div>';
+						echo '<div class="ui-block-b">';
+							echo '<div class="ui-body ui-body-a ui-corner-all" style="background-color:white" id="question1">';
+								echo '<h3>' . $this->dict['WHY_PROTECT_QUESTION_' . $i] . '</h3>';
+								echo '<p>' . $this->dict['WHY_PROTECT_ANSWER_' . $i] . '</p>';
+							echo '</div>';
+						echo '</div>';
+					echo '</div>';					
+				}
+				echo '<br/>';
+				echo '<hr/>';
+				echo '<p style="text-align:left">' . $this->dict['WHY_PROTECT_FINAL'] . '</p>';
+				echo '<hr/>';
+				echo '<div class="ui-grid-a">';
+					echo '<div class="ui-block-a" style="text-align:left;">';
+					echo '<br/><br/>';
+					echo '<a href="' . $this->self_root . '" rel="external">' . $this->dict['BACK'] . '</a> &middot; ';
+						if( $this->language == 'en' )
+							echo '<a href="' . $this->self . '?language=th">' . $this->dict['THAI'] . '</a>';
+						else  echo '<a href="' . $this->self . '?language=en">' . $this->dict['ENGLISH'] . '</a>';
+					echo '</div>';
+					echo '<div class="ui-block-b" style="text-align:right">' . $this->dict['WHY_PROTECT_ANSWERER'] . '</div>';
+				echo '</div>';
+				//echo '<a href="' . $this->self_root . '" class="ui-btn ui-btn-c ui-corner-all">' . $this->dict['BACK'] . '</a>';
+			echo '</div>';
+			echo '</center>';
+			// FOOTER
+			include 'footer_div.phtml';
+		echo '</div>';		
+	}
+?>
+<?php include 'footer.phtml';?>
